@@ -9,7 +9,7 @@ Between panel and the transceiver:
 * 57600bps 8N1 (8 bits, no parity, 1 stop bit.
 * The majority of the data exchanged between the panel & radio look to be ASCII.
 
-#### Pinout:
+#### Panel Pinout:
 ```
 Pin  Name    Description
 1    GND     Speaker ground
@@ -33,9 +33,9 @@ Panel / Radio
 ![](screenshots/ACK Sequence.png)
 * "ACK to ACK" interval is 5 seconds.
 * Internal "ACK" happening on the panel every 2 seconds.
-* Byte sequence: `0xFF` `0x0D` actual ACK is `0x0D` only.
-* Occasional `0xFF` seen here and, perhaps a "invalid response"?
-
+* Radio ACK in poweroff state is `0xFF`, vs normal `0x0D` ACK.
+* Panel will respond with `0xFF` & `0x0D` if radio ACK response is `0xFF` & `0x0D`
+ 
 ### Knobs
 TODO
 
@@ -59,7 +59,7 @@ Right: `0x30, 0x31`
 
 Adjusting AF output (Volume) is contained purely to the panel, no additional serial info is exchanged.
 
-Turning volume up, example:
+Volume:
 ```hexdump
 0x56, 0x30, 0x31, 0x0D
 0x56, 0x30, 0x32, 0x0D
@@ -68,6 +68,8 @@ Turning volume up, example:
 0x56, 0x30, 0x35, 0x0D
 0x56, 0x30, 0x36, 0x0D
 ```
+
+SQL (Squelch): `0x57`
 
 **RIT/XIT Knob**
 
@@ -89,7 +91,7 @@ Cmd  State Value Ack
 0x55 0x30  0x33  0x0D
 ```
 
-Multi & IF-Shift
+**Multi & IF-Shift knob**
 
 Multi left:
 ```
@@ -105,7 +107,11 @@ If Shift:
 
 "value" is dependent the physical speed the knob is adjusted.
 
-### Panel Buttons:
+**VFO knob**
+
+
+
+### Buttons:
 Buttons that are "single action" still will produce a button pressed & released sequence.
 Long press buttons use the command but have a different pressed value, instead of pressed: `0x31` it is `0x33`
 A long pressed button when released has the same sequence as normal, no special indication that SPLIT is turned off or on from the panels POV.
@@ -128,6 +134,25 @@ A/B        0x4A  Long press: M/V
 A=B        0x49  Long press: Split
 Menu       0x47  Long press: F.Lock
 MHz        0x48  Long press: M.STP
+FIL        0x42  Long press: NAR
+BC         0x43  CW.T in CW mode.
+DNL        0x40
+NR         0x41
+Fine       0x44  Long Press: STEP
+CH3        0x36
+KEY        0x39
+PROC       0x3B
+ENT        0x3F
+CH2        0x35
+MIC        0x38
+VOX        0x3C
+AGC        0x3E
+CH1        0x34
+PWR        0x37
+NB/T       0x3A
+MTR        0x3D
+On/Off     0x30
+PF         0x32 
+ATT/PRE    0x32
+AT         0x33 Has long press state also
 ```
-
-* #### Pressing the A/B button (details):
