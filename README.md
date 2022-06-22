@@ -5,7 +5,7 @@ This is an attempt at documenting the Kenwood TS-480 Transceiver's front panel b
 ### TS-480 Serial Communications
 
 Between panel and the transceiver:
-* UART (idle high).
+* UART (idle high), 5V TTL.
 * 57600bps 8N1 (8 bits, no parity, 1 stop bit.
 * The majority of the data exchanged between the panel & radio look to be ASCII.
 
@@ -109,15 +109,57 @@ If Shift:
 
 **VFO knob**
 
+From the radio side of things, the VFO knob values are really simple, they're just ASCII values of the VFO frequency.
+Example moving the VFO knob, to the right, from `28.530.00` to `28.530.05`
 
+```
+Panel (TX)   Radio (RX)
+S0001\r      ;2853001\r
+S0004\r      ;2853002\r
+             ;2853003\r
+S0003\r      ;2853004\r
+S0002\r      ;2853005\r
+```
+
+Going the other way from `28.530.05` to `28.530.00`:
+Looks like there are two `SFFF`'s for each frequency change?
+```
+Panel (TX)   Radio (RX)
+SFFFF \r
+SFFFF \r
+SFFFF \r     ;2853004\r
+SFFFF \r
+
+SFFFF \r
+SFFFF \r     ;2853003\r
+
+SFFFF \r
+SFFFF \r     ;2853002\r
+SFFFF \r
+SFFFF \r     ;2853001\r
+SFFFF \r
+SFFFF \r     ;2853000\r
+SFFFF \r
+```
+
+I suspect the values simply indicate _how_ fast / how much the frequency will change, spinning the dial quickly produces
+`SFFEF` instead and reply has 6 frequencies in it's reply.
+`SFFC8` -> 9 frequency changes.
+`SFF91` -> 9
+`SFF74` -> 11
+`SFFC0` -> 10
+`SFFFE` -> 2
+
+There is likely _some_ cumulative effect here without causing a massive "queue" of pending updates; could have some interrupt logic..
+The "poll" rate of the VFO knob / encoder from the panel side is pretty constant ~28-31ms.
 
 ### Buttons:
-Buttons that are "single action" still will produce a button pressed & released sequence.
-Long press buttons use the command but have a different pressed value, instead of pressed: `0x31` it is `0x33`
-A long pressed button when released has the same sequence as normal, no special indication that SPLIT is turned off or on from the panels POV.
 
-A button can have 3 values: down: `0x31`  up: `0x30` long press: `0x33`
-All button presses or commands are always suffixed with a `0x0D`
+Most of the panel buttons have 3 values / states: up: `0x30`  down: `0x31` long press: `0x33`
+These are coincidentally also ASCII values for 0, 1 and 3, logical right?
+All button presses or commands are always suffixed with a `0x0D` or ASCII: `\r` (carriage return)
+
+Buttons that are "single action" still will produce a button pressed & released sequence.
 
 ```hexdump
 Button     Byte  Comment
@@ -154,5 +196,46 @@ MTR        0x3D
 On/Off     0x30
 PF         0x32 
 ATT/PRE    0x32
-AT         0x33 Has long press state also
+AT         0x33 Has long press state also, but not used for anything.
+```
+
+S Meter values (UART RX, from radio):
+
+Meter values are prefixed with, guess what, `0x3D` (same as the meter button, nice).
+Or, alternatively in ASCII, prefixed with `=` and of course as usual ends in a carriage return `\r`
+The panel doesn't do anything other than just receive the value and display it.
+
+```
+CMD   Signal Level          Carriage Return
+0x3D  0x30 0x38 0x30 x30    0x0D
+```
+In ASCII:
+```
+= 0800 \r
+```
+
+Listening to CW it's possible to get short burst of strong signals and look at the logic analyzer output to compare.
+
+S0 signal to S9 signal:
+```
+S0 -> 0000
+S1 -> 0100
+S2 -> 0200
+S3 -> 0300
+S4 -> 0400
+S5 -> 0500
+S6 -> 0600
+S7 -> 0700
+S8 -> 0800
+S9 -> 0900
+```
+
+S9 and up:
+```
+1000 to 1400
+```
+```
+S9 +    -> 1100
+S9+20dB -> 1400
+S9+30dB -> 1500
 ```
