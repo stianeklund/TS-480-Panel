@@ -30,7 +30,9 @@ Primary focus for now is to reverse engineer the panel so it can be interfaced w
 Keepalive / ACK sequence:
 
 Panel / Radio
-![](screenshots/ACK Sequence.png)
+
+![ACK Sequence](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/ACK%20Sequence.png)
+
 * "ACK to ACK" interval is 5 seconds.
 * Internal "ACK" happening on the panel every 2 seconds.
 * Radio ACK in poweroff state is `0xFF`, vs normal `0x0D` ACK.
@@ -112,6 +114,7 @@ If Shift:
 From the radio side of things, the VFO knob values are really simple, they're just ASCII values of the VFO frequency.
 Example moving the VFO knob, to the right, from `28.530.00` to `28.530.05`
 
+![Frequency Change](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/Frequency%20Change.png)
 ```
 Panel (TX)   Radio (RX)
 S0001\r      ;2853001\r
@@ -152,6 +155,8 @@ I suspect the values simply indicate _how_ fast / how much the frequency will ch
 
 There is likely _some_ cumulative effect here without causing a massive "queue" of pending updates; could have some interrupt logic..
 The "poll" rate of the VFO knob / encoder from the panel side is pretty constant ~28-31ms.
+
+![VFO Frequency](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/VFO%20Frequency.png)
 
 ### Buttons:
 
@@ -200,6 +205,7 @@ AT         0x33 Has long press state also, but not used for anything.
 ```
 
 S Meter values (UART RX, from radio):
+![S Meter](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/S-meter%20example.png)
 
 Meter values are prefixed with, guess what, `0x3D` (same as the meter button, nice).
 Or, alternatively in ASCII, prefixed with `=` and of course as usual ends in a carriage return `\r`
