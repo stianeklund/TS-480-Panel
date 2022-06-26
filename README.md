@@ -24,6 +24,9 @@ Pin  Name    Description
 Documentation is split into two "chunks", the panel serial data and the transceiver / radio's responses etc.
 Primary focus for now is to reverse engineer the panel so it can be interfaced with a "insert radio here" ;)
 
+Power up sequence:
+
+Most bytes are suffixed with `\r` I removed them from this to improve readability
 
 #### COMMAND -> DATA VALUE -> ACK
 
@@ -74,6 +77,8 @@ Volume:
 SQL (Squelch): `0x57`
 
 **RIT/XIT Knob**
+
+ASCII value: U0 (speed): 1 (right) / UF (speed): F (left)
 
 Left: 
 ```
@@ -167,41 +172,41 @@ All button presses or commands are always suffixed with a `0x0D` or ASCII: `\r` 
 Buttons that are "single action" still will produce a button pressed & released sequence.
 
 ```hexdump
-Button     Byte  Comment
-CL         0x4D
-XIT        0x4F
-RIT        0x4E
-TF-SET-U   0x51
-TF-SET-D   0x50
-Multi      0x54  
-IF-Shift   0x58 
-QMI        0x4B  Long press: M.IN
-QMR        0x4C  Long press: M>VFO
-A/B        0x4A  Long press: M/V
-A=B        0x49  Long press: Split
-Menu       0x47  Long press: F.Lock
-MHz        0x48  Long press: M.STP
-FIL        0x42  Long press: NAR
-BC         0x43  CW.T in CW mode.
-DNL        0x40
-NR         0x41
-Fine       0x44  Long Press: STEP
-CH3        0x36
-KEY        0x39
-PROC       0x3B
-ENT        0x3F
-CH2        0x35
-MIC        0x38
-VOX        0x3C
-AGC        0x3E
-CH1        0x34
-PWR        0x37
-NB/T       0x3A
-MTR        0x3D
-On/Off     0x30
-PF         0x32 
-ATT/PRE    0x32
-AT         0x33 Has long press state also, but not used for anything.
+Button     Byte   ASCII, Comment
+CL         0x4D   M
+XIT        0x4F   O
+RIT        0x4E   N
+TF-SET-U   0x51   P
+TF-SET-D   0x50   Q
+Multi      0x54   T        T01 (right) / TFF (left)
+IF-Shift   0x58   X        (X0203 etc)
+QMI        0x4B   K        Long press: M.IN
+QMR        0x4C   L        Long press: M>VFO
+A/B        0x4A   J        Long press M/V
+A=B        0x49   I        Long press: Split
+Menu       0x47   G        Long press: F.Lock
+MHz        0x48   H        Long press: M.STP
+FIL        0x42   B        Long press: NAR
+BC         0x43   C        CW.T in CW mode.
+DNL        0x40   @
+NR         0x41   A
+Fine       0x44   D        Long Press: STEP
+CH3        0x36   6
+KEY        0x39   9
+PROC       0x3B   ;
+ENT        0x3F   ?
+CH2        0x35   5
+MIC        0x38   8
+VOX        0x3C   <
+AGC        0x3E   >
+CH1        0x34   4
+PWR        0x37   7
+NB/T       0x3A   :
+MTR        0x3D   =
+On/Off     0x30   0
+PF         0x32   2
+ATT/PRE    0x21   !
+AT         0x33   3        Also has long press
 ```
 
 ### S Meter
