@@ -15,18 +15,14 @@ Pin  Name    Description
 1    GND     Speaker ground
 2    8V      Control panel power (measured 9v..)
 3    GND
-4    RX      TTL UART Serial (radio to control head / panel)
-5    TX      TTL UART Serial (from control head / panel to radio)
+4    RX      5v TTL UART (radio to control head / panel)
+5    TX      5v TTL UART (from control head / panel to radio)
 6    AF      Speaker Audio
 ```
 
 ### Communication example between the radio and control panel
 Documentation is split into two "chunks", the panel serial data and the transceiver / radio's responses etc.
 Primary focus for now is to reverse engineer the panel so it can be interfaced with a "insert radio here" ;)
-
-Power up sequence:
-
-Most bytes are suffixed with `\r` I removed them from this to improve readability
 
 #### COMMAND -> DATA VALUE -> ACK
 
@@ -38,9 +34,25 @@ Panel / Radio
 
 * "ACK to ACK" interval is 5 seconds.
 * Internal "ACK" happening on the panel every 2 seconds.
-* Radio ACK in poweroff state is `0xFF`, vs normal `0x0D` ACK.
+* Radio ACK in off state is `0xFF`, vs normal `0x0D` ACK.
 * Panel will respond with `0xFF` & `0x0D` if radio ACK response is `0xFF` & `0x0D`
  
+Disconnecting the panel & reconnecting it:
+
+![Panel_Disconnect_Reconnect](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/Logic_AgxXCBxsCz.png)
+
+Panel inquires radio power state?
+
+RX (Panel):
+```
+hex: 0x30 0x32 0x0D
+ascii: 0 2 \r
+```
+TX (Radio), when off (hey panel, I'm off):
+```
+hex: 0x0D 0x30 0x30 0x0D
+ascii: \r  0 0
+```
 ### Knobs
 TODO
 
@@ -207,6 +219,7 @@ On/Off     0x30   0
 PF         0x32   2
 ATT/PRE    0x21   !
 AT         0x33   3        Also has long press
+On / Off   0x30 (0x31)  0 / 1  Not connected to same button logic as the rest of the panel
 ```
 
 ### S Meter

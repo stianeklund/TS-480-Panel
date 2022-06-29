@@ -117,3 +117,19 @@ TX   \r    0x0D
 TX   xFF   0xFF
 TX   \r    0x0D
 ```
+
+## Differences in power on sequence with serial connected
+
+If the TS-480 is connected to a PC via RS232, for example through ARCP-480, and power on is initiated from the PC side, the sequence is a little different.
+From what I can tell the RX line  (Radio to Panel) is the same, but TX (Panel to Radio) is slightly different.
+
+Normally when pressing power on from the panel the RX line would see:
+```hex
+hex: 0x30 0x31 0x0D
+ascii: 0 1 \r
+```
+However if the radio is turned _on_ from the PC side, i.e. initiated over RS232 the RX line will see:
+```hex
+hex: 0x30 0x32 0x0D
+ascii: 0 2 \r
+```
