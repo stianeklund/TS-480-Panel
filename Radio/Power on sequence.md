@@ -85,8 +85,8 @@ S0
 Panel reply:
 
 ```
-X01FF                IF Shift value
-V2A                  Volume value
+               IF Shift value
+V2A     X01FF              Volume value
 W00
 ```
 

@@ -77,16 +77,27 @@ Right: `0x30, 0x31`
 Adjusting AF output (Volume) is contained purely to the panel, no additional serial info is exchanged.
 
 Volume:
-```hexdump
-0x56, 0x30, 0x31, 0x0D
-0x56, 0x30, 0x32, 0x0D
-0x56, 0x30, 0x33, 0x0D
-0x56, 0x30, 0x34, 0x0D
-0x56, 0x30, 0x35, 0x0D
-0x56, 0x30, 0x36, 0x0D
+```
+V01, V02.. V10, V20, V40 etc
 ```
 
-SQL (Squelch): `0x57`
+```hexdump
+Command  Values 
+0x56,    0x30, 0x31
+0x56,    0x30, 0x32
+0x56,    0x30, 0x33
+0x56,    0x30, 0x34
+0x56,    0x30, 0x35
+0x56,    0x30, 0x36
+```
+
+SQL (Squelch): 
+
+```
+Command(ASCII) Valid values
+0x57 (W)       W00 .. WFF?
+```
+
 
 **RIT/XIT Knob**
 
@@ -113,13 +124,15 @@ Cmd  State Value Ack
 **Multi & IF-Shift knob**
 
 Multi left:
+In ASCII T+hexvalue (but sent as ascii..), e.g T01, T20
 ```
-0x54 0x46 0x46 0x0D
-
+Command  Value
+0x54     0x46 0x46
 ```
 Right:
 ```
-0x54 0x30 0x31 0x0D
+Command  Value
+0x54     0x30 0x31 
 ```
 
 If Shift:
@@ -128,17 +141,64 @@ If Shift:
 
 **VFO knob**
 
-From the radio side of things, the VFO knob values are really simple, they're just ASCII values of the VFO frequency.
 Example moving the VFO knob, to the right, from `28.530.00` to `28.530.05`
 
 ![Frequency Change](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/Frequency%20Change.png)
+
+Panel "commands" to adjust VFO frequency:
+
+They are prefixed with S and then contains a hex byte value
+
 ```
 Panel (TX)   Radio (RX)
 S0001\r      ;2853001\r
-S0004\r      ;2853002\r
-             ;2853003\r
-S0003\r      ;2853004\r
-S0002\r      ;2853005\r
+```
+
+
+
+TODO work out increments here, it makes more sense to use the multi knob for faster frequency changes anyways..
+
+```
+Panel CMD  Increment
+S8000      -163.84kHz
+S7999      155.65kHz
+S7000      143.36 kHz
+S5800      112.65 kHz
+S2400      46.08 KHz
+S1900      32.00 KHz
+S1400      25.60 KHz
+S1000      20.48 KHz
+S0900      11.52 KHz
+S0800      10.24 KHz
+S0700      8.96 KHz
+S0600      7.69 KHz
+S0500      6.41 KHz
+S0400      5.12 KHz
+S0300      3.85 KHz
+S0200      2.56 KHz
+S0100      1.28 KHz
+S0090      72
+S0080      64
+S0060      48
+S0050      41
+S0020      16
+S0017      12
+S0016      11
+S0015      11
+S0014      10
+S0013      9.9?
+S0012      9
+S0011      9
+S0010      8
+S0009      5
+S0008      4
+S0007      4
+S0006      3
+S0005      3
+S0004
+S0003      
+S0002
+S0001     0 (need to execute twice to increment 1)
 ```
 
 Going the other way from `28.530.05` to `28.530.00`:
