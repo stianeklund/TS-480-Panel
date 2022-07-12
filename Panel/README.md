@@ -1,14 +1,13 @@
 ﻿# Kenwood TS-480 Panel (Control Head)
 
-![Panel](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/Panel/20220712_084245.jpg)
-
 ## Input & Output
 * [Panel buttons: byte & ASCII values](https://github.com/stianeklund/TS-480-Panel/blob/main/Panel\Buttons.md)
 * [Panel Meter values](https://github.com/stianeklund/TS-480-Panel/blob/main/Panel\S-Meter_UART-RX.md)
-
-### Panel details
+* [Encoder & Knobs](https://github.com/stianeklund/TS-480-Panel/blob/main/Panel\Encoders.md)
 
 Set VFO info / memory channel xit rit values?
+`=0000$0D` indicates that VFO A = B or is command VFO A=B?
+
 ```
 .20.61.71.;5025935.<        .=0000.CÈ.:  
 .20.61.71.;5025935.<        .=0000.:  
@@ -17,7 +16,6 @@ Set VFO info / memory channel xit rit values?
 .20.61.71.;5025935.<        .=0000.:  
 .20.61.71.;5025935.<        .=0000.:  
 .20.61.71.;5025935.<        .=
-
 ```
 
 ### Display Segments:
@@ -31,16 +29,17 @@ LOCK     : 0x43 0x80 ..= 0x8
 
 # Init / startup sequence
 
+This is data that the panel receives from the radio.
 ```
 01       <-- Turn on 
-01       <-- Turn on
+01       <-- Turn on  <-- some time needs to pass before executing RO etc below
 :        <-- 0x3A NB?
 R0       <-- Read memory? Definitely memory related
-It repeats this sequencne quite a bit, could be loading VFO's and memories with different values?
+It repeats this sequence quite a bit, could be loading VFO's and memories with different values?
 20       <-- Exit Memory mode
 61       <-- Read XIT
 71       <-- Show ALC Meter 
-80       <-- Read Squeltch value?
+80       <-- Read squelch value?
 94       <-- USB/LSB etc... Mode
 ;4077620 <-- Frequency
 <        
