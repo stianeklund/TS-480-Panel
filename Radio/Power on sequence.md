@@ -1,5 +1,12 @@
 ﻿## Kenwood TS-480 transceiver power-on sequence
 
+The notes below are somewhat outdated, most recent findings can be found here:
+[Deciphering the start up sequence](https://github.com/stianeklund/TS-480-Panel/blob/main/Panel/README.md)
+
+---
+
+## Dumps
+
 Data dumped from the transceiver (radio) RX UART to the panel, this is data being sent to the panel _from_ the radio
 
 ```
