@@ -27,19 +27,19 @@ Pin  Name    Description
 6    AF      Speaker Audio
 ```
 
-#### COMMAND -> DATA VALUE -> ACK
+*COMMAND -> DATA VALUE -> ACK*
 
-Keepalive / ACK sequence:
-
-Panel / Radio
+#### Keepalive / ACK sequence:
 
 ![ACK Sequence](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/ACK%20Sequence.png)
 
-* "ACK" interval is 3 seconds.
-* Panel has it's own keepalive / timeout logic, radio also separately.
-* Radio ACK is `0xFF` when powered, `0x00` when off, followed by `0x0D` (carriage return)
-* Panel keepalive / ack is `0xFF` `0x0D`
-* Panel will reply 02 from 01 inquiry.
+![ACK_Interval](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/ACK_Interval.png)
+
+![ACK_Timing](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/ACK_Timing.png)
+
+* The radio and panel have their own ACK intervals, both have timeout logic.
+* Interval on the radio is ACK every 5 seconds.
+* Panel interval is every 2 seconds but received "interrupt ACK" from radio on third second, responds immediately after.
 
 Changing frequency:
 
@@ -50,6 +50,7 @@ Changing frequency:
 ### Volume and Squelch
 
 Adjusting AF output (Volume) is contained purely to the panel, no additional serial info is exchanged.
+ARCP-480 can adjust volume as well but this is probably done by changing the voltage the speaker sees.
 
 Valid volume values are from `V00` to `VFF`
 
@@ -84,6 +85,7 @@ Just changing VFO A/B without updating frequency:
 
 92 0x0D ;1409200 0x0D =0000 0x0D 0x0D D 0x0D E x0D
 92 0x0D ;1409200 0x0D =0000 0x0D 0x0D D 0x0D E x0D
+
 Set VFO A to Mode USB frequency:
 Mode 
 92 0x0D ;1409200 0x0D =0000 0x0D D 0x0D 0x0D E x0D
