@@ -34,12 +34,10 @@ Menu entries look like this:
 
 Exit menu: 3A 20 20 0D 32 30 0D 40 84 0D 45 81 0D
 
-```
-Entry       | Description text | 
-:07         | P07              | 2  E  4  0  0  @  ”     | E €     |
-3A 30 37 0D | 50 30 37 0D      | 32 45 34 30 30 40 94 0D | 45 80 0D
-
-```
+| Entry       | Description text | Command                 |          |
+|-------------|------------------|-------------------------|----------|
+| :07         | P07              | 2  E  4  0  0  @  ”     | E €      |
+| 3A 30 37 0D | 50 30 37 0D      | 32 45 34 30 30 40 94 0D | 45 80 0D |
 
 ---
 
@@ -113,7 +111,7 @@ Meter values:
 Q0    <-- RX Only, Q1 = Twin Power (Not sure what is valid for 480-SAT, probably the same but different txt stored in firmware?)
 O  <-- Read out XIT, Volume & Squelch
 31 <--  Unit seperator?
-81 <-- Turn LED on (Green, RX), 82 = TX
+81 <-- Turn LED on (Green, RX), 82 = TX, e.g: 38 32 0D 33 33 0D 33 31 0D to turn on
 S0  <-- Segment for error codes Error codes etc, S1 to S7, clear error code
 ÿ
 ÿ
