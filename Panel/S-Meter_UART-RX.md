@@ -22,6 +22,12 @@ In ASCII:
 ```
 = 0800 \r
 ```
+
+![SWR Meter](https://raw.githubusercontent.com/stianeklund/TS-480-Panel/main/screenshots/swr-meter-pic.png)
+
+SWR meter values are the last digit in `=0000` where the digit represents the amount of bars lit for the SWR meter.
+Valid range is `=0001` to `=0010`
+
 Please see S-Meter picture above for reference.
 
 S0 signal to S9 signal:
