@@ -41,6 +41,32 @@ Exit menu: 3A 20 20 0D 32 30 0D 40 84 0D 45 81 0D
 
 ---
 
+### Turn on RX / TX lamp
+
+#### Address: `0x38` (ASCII: `8`):
+
+| Byte Value | Comment     |
+|------------|-------------|
+| 0x30       | RX lamp off |
+| 0x31       | RX lamp on  |
+| 0x32       | TX Lamp on  |
+
+
+### Key Backlight illumination
+
+#### Address: `0x37` (ASCII: `7`):
+
+| Byte Value | Comment                        |
+|------------|--------------------------------|
+| 0x30       | Key backlight illumination off |
+| 0x31       | Key backlight illumination on  |
+| 0x80       | Turns off ANT segment          |
+| 0x82       | NR1                            |
+| 0x84       | NR2                            |
+
+
+---
+
 # Init / startup sequence
 This is data that the panel receives from the radio. 
 Time between power on (01), until the radio starts sending the rest of the data, `: R0..etc` always takes 5 seconds. No indication that it relies on any ACK.

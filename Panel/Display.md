@@ -19,9 +19,6 @@ TODO: It's seems fairly standard.. Just don't recall, multiplexing may play into
 | 0x52       | Delay    | `400-414` (0-100)                                   |
 | 0x5E       | TX MONI  | `401-464` (0-100)                                   |
 
-
-34 30 35
-
 #### Segment `0x3A` (ASCII: `I`)
 | Byte Value | Comment               |
 |------------|-----------------------|
@@ -41,6 +38,13 @@ TODO: It's seems fairly standard.. Just don't recall, multiplexing may play into
 | 0x88       | ANT 1 -> 2            |
 | 0x84       | ANT 2 -> 1            |
 | 0x80       | Turns off ANT segment |
+
+#### Segment `0x3D` (ASCII: `=`)
+| Byte Value      | Comment               |
+|-----------------|-----------------------|
+| 0x30 0x30 0x30  | ANT 1 -> 2            |
+| 0x84            | ANT 2 -> 1            |
+| 0x80            | Turns off ANT segment |
 
 #### Segment `0x3F` (ASCII `?`):
 
@@ -118,6 +122,15 @@ This is probably redundant, it's covered elsewhere, this doesn't engage the TX r
 | 0xC8       | XIT (Off)             |
 | 0xE8       | XIT (On)              |
 | 0xE8       | XIT (On)              |
+
+#### Address: `0x44` (ASCII: `D`):
+
+| Byte Value | Comment               |
+|------------|-----------------------|
+| 0x80       | Column? off           |
+| 0x09       | SPLIT ON              |
+| 0x81       | A On                  |
+| 0x89       | SPLIT ON              |
 
 Turning XIT on to 1760 above QRG, `<  0  0  0  0  1  7  6  0`
 ```
