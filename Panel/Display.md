@@ -7,17 +7,32 @@ Furthermore depending on the segment that is being activated previous row values
 (Should reference the service manual here..)
 
 Columns seem to be increments of 2 bits within sections, passing sections the increment is 8 bits.
-TODO: It's seems fairly standard.. Just don't recall, multiplexing may play into this.
 
 #### Segment `0x32` (ASCII: `2`)
 | Byte Value | Comment  | Setting                                             |
 |------------|----------|-----------------------------------------------------|
 | 0x4E       | MIC      | `401-464` (0-100)                                   |
+| 0x35       | FIL      | `400-40D` (1000-5000) 0x34, 0x30, 0x30              |
 | 0x4F       | MIC GAIN | `400-464` (0-100)                                   |
 | 0x50       | KEY      | `400-432` (10-60)                                   |
 | 0x51       | PWR      | `0x40` `0x405-4C8` (increments of 5), `464` is 100W |
 | 0x52       | Delay    | `400-414` (0-100)                                   |
 | 0x5E       | TX MONI  | `401-464` (0-100)                                   |
+
+
+#### Filter values
+| Address | Select byte | Filter   | Value range                                                              |
+|---------|-------------|----------|--------------------------------------------------------------------------|
+| 0x32    | 0x34        | WDH      | `401-464` (0-100) Note this address line is also used for reading menu's |
+| 0x32    | 0x35        | HI       | `401-464` (0-100)                                                        |
+| 0x35    | 0x36        | LO       | `400-40D` (1000-5000) 0x34, 0x30, 0x30                                   |
+
+#### Menu numeric values, e.g: filter width etc
+| Address    | Select byte | Filter   | Value range                                                              |
+|------------|-------------|----------|--------------------------------------------------------------------------|
+| 0x34, 0x30 | 0x34        | WDH      | `401-464` (0-100) Note this address line is also used for reading menu's |
+| 0x32, 0x30 | 0x35        | HI       | `401-464` (0-100)                                                        |
+| 0x35, 0x30 | 0x36        | LO       | `400-40D` (1000-5000) 0x34, 0x30, 0x30                                   |
 
 #### Segment `0x3A` (ASCII: `I`)
 | Byte Value | Comment               |
