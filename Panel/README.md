@@ -31,12 +31,12 @@ Exiting the menu for example looks like this: `3A 20 20 0D 32 30 0D 40 84 0D 45 
 
 Setting the menu number segment:
 
-| Command | Menu number (2 bytes) | Binary    | Comment                        |
-|---------|-----------------------|-----------|--------------------------------|
-| 0x3a    | 0x20 0x20             | 0010_0000 | Turns off the segment entirely |
-| 0x3a    | 0x30 0x30             | 0011_0000 | Menu segment on, display: 00   |
-| 0x3a    | 0x30 0x31             | 0011_0001 | Menu segment on, display: 01   |
-| 0x3a    | 0x30 0x32             | 0011_0010 | Menu segment on, display: 01   |
+| Command | Menu number (2 bytes*) | Binary    | Comment                                                               |
+|---------|------------------------|-----------|-----------------------------------------------------------------------|
+| 0x3a    | 0x20 0x20 0x20         | 0010_0000 | Turns off the segment entirely. *If menu item <= 10 only need 2 bytes |
+| 0x3a    | 0x30 0x30              | 0011_0000 | Menu segment on, display: 00                                          |
+| 0x3a    | 0x30 0x31              | 0011_0001 | Menu segment on, display: 01                                          |
+| 0x3a    | 0x30 0x32              | 0011_0010 | Menu segment on, display: 01                                          |
 
 It's pretty clear the menu items are set in firmware ase they don't rely on data from the actual radio to access.
 
@@ -51,31 +51,39 @@ It's pretty clear the menu items are set in firmware ase they don't rely on data
 
 
 
+
+
+
 ---
 
-### Turn on RX / TX lamp
+### RX / TX lamp
 
-#### Address: `0x38` (ASCII: `8`):
-
-| Byte Value | Comment     |
-|------------|-------------|
-| 0x30       | RX lamp off |
-| 0x31       | RX lamp on  |
-| 0x32       | TX Lamp on  |
+| Address | Value | Comment     |
+|---------|-------|-------------|
+| 0x38    | 0x30  | RX lamp off |
+| 0x38    | 0x31  | RX lamp on  |
+| 0x38    | 0x32  | TX Lamp on  |
 
 
 ### Key Backlight illumination
 
-#### Address: `0x37` (ASCII: `7`):
+| Address | Byte Value | Key Illumination |
+|---------|------------|------------------|
+| 0x37    | 0x30       | Off              |
+| 0x37    | 0x31       | On               |
 
-| Byte Value | Comment                        |
-|------------|--------------------------------|
-| 0x30       | Key backlight illumination off |
-| 0x31       | Key backlight illumination on  |
-| 0x80       | Turns off ANT segment          |
-| 0x82       | NR1                            |
-| 0x84       | NR2                            |
 
+### Display brightness
+
+Can be written without any prefixes, display brightness is just stored in memory at 36h; 0x0D needs to be suffixed after the byte value
+
+| Address | Value | Display brightness |
+|---------|-------|--------------------|
+| 0x36    | 0x30  | Off                |
+| 0x36    | 0x31  | 1                  |
+| 0x36    | 0x32  | 2                  |
+| 0x36    | 0x33  | 3                  |
+| 0x36    | 0x34  | 4                  |
 
 ---
 
@@ -114,12 +122,12 @@ At the very tail end of the transmission:
 01       <-- Turn on. 
 :        <-- 0x3A Menu items might be prefixed by this?
 R0       <-- Read memory / entry 0
-20       <-- Exit Menu / Memory Mode or enter VFO mode? (Seems to be used to exit a submenu or long press state)
-61       <-- Set display brightness on panel (60 to 64)?
-71       <-- TX monitor value?
-80       <-- Set squelch value
+20       <-- Clear menu item number segment, turn segment off
+61       <-- Set display brightness on panel (60 to 64)
+71       <-- Key backlight on
+80       <-- Set RX / TX LED to RX (Green)
 94       <-- Set mode (USB LSB, CW etc)
-;4077620 <-- Set display frequency
+;4077620 <-- Set VFO A / display frequency
 <        <-- Clear XIT / SPLIT frequency on display
 =0000    <-- Clear meters etc.
 >73      <-- Show SWR meter
@@ -143,12 +151,12 @@ Meter values:
 :  
 20  <-- Exits the menu, clear the area menu items are shown // Exit menu? / VFO mode
 61  <-- Display brightness
-71  <-- unknown
+71  <-- Backlight
 ;4077620 <- VFO Freq
 <        
-=0000 <-- Clear Meters
-Q0   <-- RX Only, Q1 = Twin Power (Not sure what is valid for 480-SAT, probably the same but different txt stored in firmware?)
-O  <-- Read out XIT, Volume & Squelch
+=0000 <-- Clear Meters                                                                         * <-- bits 0 and 1 indicate pwr status on HX model
+Q0   <-- Model / status? Text shown on bootup: Q0 = RX Only, Q1 = Twin PWR. 0b0101_0000 0011_0000
+O  <-- Read out XIT, Volume & Squelch                                                 ^-- last bit set for HX models?         
 31 <--  Unit seperator?
 81 <-- Turn LED on (Green, RX), 82 = TX, e.g: 38 32 0D 33 33 0D 33 31 0D to turn on
 S0  <-- Segment for error codes Error codes etc, S1 to S7, clear error code

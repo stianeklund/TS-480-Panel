@@ -51,7 +51,8 @@ Pin  Name    Description
 
 ### Volume and Squelch
 
-Adjusting AF output (Volume) is contained purely to the panel, no additional serial info is exchanged.
-ARCP-480 can adjust volume as well but this is probably done by changing the voltage the speaker sees.
+Adjusting AF output (Volume) is contained purely to the panel. 
+ARCP-480 can adjust volume as well but this is probably done by changing the voltage the speaker sees?
+
 
 Valid volume values are from `V00` to `VFF`
