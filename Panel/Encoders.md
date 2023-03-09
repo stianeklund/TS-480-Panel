@@ -90,6 +90,37 @@ The "value" is dependent the physical speed the knob is adjusted?
 
 Panel "commands" to adjust VFO frequency:
 
+Could these values be grey code?
+
+For example, counter clockwise rotation value `SFFFE`
+
+Value: `0x53 0x46 0x46, 0x46, 0x45`
+
+If we break down this value and look 
+
+| Value | Binary       |      |
+|-------|--------------|------|
+| 0x53  | 0b_0011_0101 | 0x35 |
+| 0x46  | 0b_0010_1110 | 0x2e |
+| 0x46  | 0b_0010_1110 | 0x2e |
+| 0x46  | 0b_0010_1110 | 0x2e |
+| 0x45  | 0b_0010_1101 | 0x2d |
+
+
+Bit 4 also is not set if clockwise, but set for counter clockwise movement
+
+Clockwise rotation:
+
+Value:`S000C` `0x53, 0x30, 0x30, 0x30, 0x43`
+
+| Value | Binary       |      |
+|-------|--------------|------|
+| 0x53  | 0b_0011_0101 | 0x35 |
+| 0x30  | 0b_0001_1110 | 0x1e | 
+| 0x30  | 0b_0001_1110 | 0x1e | 
+| 0x30  | 0b_0001_1110 | 0x1e | 
+| 0x43  | 0b_0010_1011 | 0x2b | 
+
 
 ### Clockwise rotation with a base frequency of `28.500.000`
 
