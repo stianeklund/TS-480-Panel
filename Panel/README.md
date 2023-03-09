@@ -6,8 +6,6 @@
 * [Encoder & Knobs](https://github.com/stianeklund/TS-480-Panel/blob/main/Panel/Encoders.md)
 * [Display Segments etc..](https://github.com/stianeklund/TS-480-Panel/blob/main/Panel/Display.md)
 
-Set VFO info / memory channel xit rit values?
-`=0000$0D` indicates that VFO A = B or is command VFO A=B?
 
 # Panel Commands
 
@@ -48,11 +46,6 @@ It's pretty clear the menu items are set in firmware ase they don't rely on data
 | Q0    | 3a 30 30 0d | 51 30 0d    | Doesn't apply? | Q1 for twin power, this                                          |
 | Q1    | 3a 30 30 0d | 51 31 0d    | Doesn't apply? | Q1 for twin power, this                                          |
 | R0    | 3a 30 30 0d | 52 30 0d    | Doesn't apply  | See the commented startup section below                          |
-
-
-
-
-
 
 ---
 
